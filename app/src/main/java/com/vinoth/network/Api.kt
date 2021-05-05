@@ -11,6 +11,9 @@ interface Api {
     fun searchImages(
         @Query(value = "text")
         searchTerm: String,
+
+        @Query(value = "page")
+        page: Int,
     ): Call<PhotosSearchResponse>
 
     companion object {

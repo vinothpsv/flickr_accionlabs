@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vinoth.dataclass.Photo
 
-class PhotoAdapter(private val context: Context, private val photos: MutableList<Photo> = mutableListOf()) : RecyclerView.Adapter<PhotoAdapter.MyViewHolder>() {
+class PhotoAdapter(private val context: Context, var photos: MutableList<Photo> = mutableListOf()) : RecyclerView.Adapter<PhotoAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.photo_recyclerview, parent, false)
@@ -29,6 +29,11 @@ class PhotoAdapter(private val context: Context, private val photos: MutableList
                 .into(holder.imageView)
         }
         holder.textView.text = photoItem.title
+    }
+
+    fun addItem(photos: MutableList<Photo>) {
+        photos.addAll(photos)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

@@ -29,8 +29,10 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     photoViewModel.loadPhoto(query)
+                    searchView?.setQuery(query, false)
+                    searchView?.clearFocus()
+                    Toast.makeText(applicationContext, "Fetching ${query}", Toast.LENGTH_LONG).show()
                 }
-                Toast.makeText(applicationContext, "Ferching new search", Toast.LENGTH_LONG).show()
                 return false
             }
 
@@ -38,11 +40,18 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+        searchView?.setQuery("Nature", true)
+        Toast.makeText(applicationContext, "Fetching Nature", Toast.LENGTH_LONG).show()
+        searchView?.clearFocus()
 
         photoViewModel.getLiveData()?.observe(this, { reponse ->
-            adapter = PhotoAdapter(this, reponse?.toMutableList() ?: mutableListOf())
-            recyclerview?.adapter = adapter
-            adapter?.notifyDataSetChanged()
+            if (adapter == null) {
+                adapter = PhotoAdapter(this, reponse?.toMutableList() ?: mutableListOf())
+                recyclerview?.adapter = adapter
+                adapter?.notifyDataSetChanged()
+            } else {
+                adapter?.addItem(reponse?.toMutableList() ?: mutableListOf())
+            }
         })
     }
 }
